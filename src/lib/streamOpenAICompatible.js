@@ -68,4 +68,13 @@ export async function streamOpenAICompatibleChat({
       if (parsed.text) onChunk(parsed.text)
     }
   }
+
+  // 流结束时 buffer 里可能还有最后一行（含 data: [DONE]）
+  const tail = buffer.trim()
+  if (tail) {
+    const line = tail.startsWith('data: ') ? tail : `data: ${tail}`
+    const parsed = parseSseDataLine(line)
+    if (parsed?.done) return
+    if (parsed?.text) onChunk(parsed.text)
+  }
 }

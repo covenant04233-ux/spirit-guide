@@ -1,3 +1,26 @@
+/** 开发/预览时走 Vite 同源代理，避免浏览器对火山域名的 CORS 拦截 */
+export function resolveDoubaoApiBaseForFetch() {
+  const explicit = import.meta.env.VITE_DOUBAO_BASE_URL?.trim()
+  if (import.meta.env.PROD) {
+    return explicit || 'https://ark.cn-beijing.volces.com/api/v3'
+  }
+  if (import.meta.env.VITE_DOUBAO_DEV_PROXY === 'false') {
+    return explicit || 'https://ark.cn-beijing.volces.com/api/v3'
+  }
+  return '/__dev-proxy/ark-api'
+}
+
+/** 将方舟返回的图片 URL 转为同源代理地址，便于 fetch 成 Blob 并触发本地下载 */
+export function resolveComicImageDownloadUrl(remoteImageUrl) {
+  if (!remoteImageUrl || remoteImageUrl.startsWith('blob:')) {
+    return remoteImageUrl
+  }
+  if (import.meta.env.PROD || import.meta.env.VITE_DOUBAO_DEV_PROXY === 'false') {
+    return remoteImageUrl
+  }
+  return `/__dev-proxy/ark-image?url=${encodeURIComponent(remoteImageUrl)}`
+}
+
 function buildComicPrompt({ readingText, userQuestion, i18nLang }) {
   const langLine =
     i18nLang === 'en'
@@ -27,18 +50,21 @@ function buildComicPrompt({ readingText, userQuestion, i18nLang }) {
     .join('\n')
 }
 
+/**
+ * 调用火山方舟 Seedream 文生图（默认 doubao-seedream-4-0，即 Seedream 4.0）。
+ * onProgress：0–100。方舟该接口为单次 HTTP，无服务端分步进度，这里在请求等待期间做平滑占位进度。
+ */
 export async function generateSeedreamComic({
   readingText,
   userQuestion,
   i18nLang,
+  onProgress,
 }) {
   const apiKey = import.meta.env.VITE_DOUBAO_API_KEY?.trim()
   const model =
     import.meta.env.VITE_DOUBAO_SEEDREAM_MODEL?.trim() ||
     'doubao-seedream-4-0-250828'
-  const base =
-    import.meta.env.VITE_DOUBAO_BASE_URL?.trim() ||
-    'https://ark.cn-beijing.volces.com/api/v3'
+  const base = resolveDoubaoApiBaseForFetch()
 
   if (!apiKey) {
     throw new Error('MISSING_DOUBAO_IMAGE_KEY')
@@ -48,30 +74,79 @@ export async function generateSeedreamComic({
   }
 
   const prompt = buildComicPrompt({ readingText, userQuestion, i18nLang })
-  const res = await fetch(`${base}/images/generations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      prompt,
-      response_format: 'url',
-      size: '2K',
-      watermark: true,
-    }),
-  })
+  onProgress?.(4)
 
-  if (!res.ok) {
-    const detail = await res.text()
-    throw new Error(`SEEDREAM_API_ERROR ${res.status}: ${detail}`)
+  let tick = 0
+  let intervalId = null
+  const clearTick = () => {
+    if (intervalId != null) {
+      clearInterval(intervalId)
+      intervalId = null
+    }
   }
 
-  const data = await res.json()
-  const imageUrl = data?.data?.[0]?.url
-  if (!imageUrl) {
+  intervalId = setInterval(() => {
+    tick += 1
+    const cap = 90
+    const n = Math.min(
+      cap,
+      Math.round(8 + tick * 2.4 + Math.sin(tick / 4) * 2),
+    )
+    onProgress?.(n)
+  }, 280)
+
+  try {
+    const res = await fetch(`${base}/images/generations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        prompt,
+        response_format: 'url',
+        size: '2K',
+        watermark: true,
+      }),
+    })
+
+    clearTick()
+    onProgress?.(94)
+
+    if (!res.ok) {
+      const detail = await res.text()
+      onProgress?.(0)
+      throw new Error(`SEEDREAM_API_ERROR ${res.status}: ${detail}`)
+    }
+
+    const data = await res.json()
+    const item = data?.data?.[0]
+    if (!item) {
+      onProgress?.(0)
+      throw new Error('SEEDREAM_EMPTY_IMAGE')
+    }
+    onProgress?.(98)
+
+    if (typeof item.url === 'string' && item.url.length) {
+      onProgress?.(100)
+      return item.url
+    }
+    if (typeof item.b64_json === 'string' && item.b64_json.length) {
+      const bin = atob(item.b64_json)
+      const bytes = new Uint8Array(bin.length)
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+      const blobUrl = URL.createObjectURL(
+        new Blob([bytes], { type: 'image/png' }),
+      )
+      onProgress?.(100)
+      return blobUrl
+    }
+    onProgress?.(0)
     throw new Error('SEEDREAM_EMPTY_IMAGE')
+  } catch (e) {
+    clearTick()
+    onProgress?.(0)
+    throw e
   }
-  return imageUrl
 }

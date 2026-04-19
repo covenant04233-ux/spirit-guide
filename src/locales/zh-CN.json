@@ -37,10 +37,18 @@
     "missingKey": "未配置模型密钥：请在 .env.local 中任选一种——(1) OpenAI 兼容：VITE_OPENAI_COMPAT_API_KEY + VITE_OPENAI_COMPAT_BASE_URL（如 DeepSeek https://api.deepseek.com/v1），详见 .env.example；(2) 或 VITE_GEMINI_API_KEY。",
     "comicGenerate": "生成四格漫画",
     "comicGenerating": "漫画生成中…",
+    "comicSectionTitle": "四格漫画（Seedream 4.0）",
+    "comicPhaseSubmit": "提交至火山方舟…",
+    "comicPhaseRender": "Seedream 4.0 正在绘制四格…",
+    "comicPhaseParse": "接收画面数据…",
+    "comicPhaseDone": "生成完成",
+    "comicNeedDoubaoEnv": "未检测到文生图配置：请在 loveu2901/.env.local 中填写 VITE_DOUBAO_API_KEY=你的方舟Key，保存文件（⌘S）后务必重启 npm run dev。若等号后为空，Vite 读不到密钥。",
     "comicOpenNew": "新窗口查看原图",
     "comicAlt": "根据解牌生成的四格漫画",
     "comicMissingKey": "未配置豆包文生图密钥：请在 .env.local 设置 VITE_DOUBAO_API_KEY（以及可选的 VITE_DOUBAO_BASE_URL / VITE_DOUBAO_SEEDREAM_MODEL）。",
-    "comicEmptyReading": "解牌文本为空，请先完成解读再生成漫画。"
+    "comicEmptyReading": "解牌文本为空，请先完成解读再生成漫画。",
+    "comicDownloaded": "漫画已尝试保存到浏览器默认「下载」文件夹。",
+    "comicDownloadManual": "无法自动保存时：请点击「新窗口查看原图」，在图片上右键「将图像存储为…」。"
   },
   "camera": {
     "start": "开启灵视（摄像头）",

@@ -37,10 +37,18 @@
     "missingKey": "No LLM key: set either (1) VITE_OPENAI_COMPAT_API_KEY + VITE_OPENAI_COMPAT_BASE_URL (e.g. DeepSeek https://api.deepseek.com/v1) or (2) VITE_GEMINI_API_KEY in .env.local — see .env.example.",
     "comicGenerate": "Generate 4-panel comic",
     "comicGenerating": "Generating comic…",
+    "comicSectionTitle": "4-panel comic (Seedream 4.0)",
+    "comicPhaseSubmit": "Sending request to Volcengine Ark…",
+    "comicPhaseRender": "Seedream 4.0 is drawing the 4 panels…",
+    "comicPhaseParse": "Receiving image data…",
+    "comicPhaseDone": "Done",
+    "comicNeedDoubaoEnv": "No image API env: set VITE_DOUBAO_API_KEY in loveu2901/.env.local, save the file, then restart npm run dev. An empty value after = is ignored by Vite.",
     "comicOpenNew": "Open full image",
     "comicAlt": "Four-panel comic generated from tarot reading",
     "comicMissingKey": "Missing Doubao image key: set VITE_DOUBAO_API_KEY in .env.local (optionally VITE_DOUBAO_BASE_URL / VITE_DOUBAO_SEEDREAM_MODEL).",
-    "comicEmptyReading": "Reading text is empty. Finish the reading first."
+    "comicEmptyReading": "Reading text is empty. Finish the reading first.",
+    "comicDownloaded": "Download triggered to your browser’s default Downloads folder.",
+    "comicDownloadManual": "If auto-download is blocked: use “Open full image”, then right-click the image and choose “Save Image As…”."
   },
   "camera": {
     "start": "Open Vision (camera)",

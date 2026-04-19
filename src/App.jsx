@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ErrorBoundary } from './components/common/ErrorBoundary'
 import { HandTrackerPanel } from './components/hand/HandTrackerPanel'
 import { PhaseHud } from './components/hud/PhaseHud'
 import { SagePanel } from './components/sage/SagePanel'
@@ -26,7 +27,30 @@ export default function App() {
       <GestureSessionProvider>
         <div className="relative h-full w-full">
           <div className="absolute inset-0 z-0">
-            <TarotScene />
+            <ErrorBoundary
+              fallback={({ error }) => (
+                <div className="flex h-full w-full items-center justify-center bg-black px-6">
+                  <div className="max-w-xl rounded-2xl border border-white/10 bg-black/60 p-6 text-center shadow-2xl backdrop-blur-md">
+                    <h2 className="font-display text-xl font-semibold text-slate-100">
+                      场景加载失败
+                    </h2>
+                    <p className="mt-2 font-sans text-sm leading-relaxed text-slate-300">
+                      常见原因是牌面图片从 Wikimedia（`upload.wikimedia.org`）加载失败，导致
+                      three.js 贴图报错后整页空白。
+                    </p>
+                    <pre className="mt-3 max-h-40 overflow-auto rounded-lg bg-black/50 p-3 text-left font-mono text-[11px] text-red-200">
+                      {String(error?.message || error)}
+                    </pre>
+                    <p className="mt-3 font-sans text-xs leading-relaxed text-slate-400">
+                      处理方式：确保能访问 `upload.wikimedia.org`（或开代理）后刷新页面；或者把
+                      牌面资源改成本地 `public/` 文件再加载。
+                    </p>
+                  </div>
+                </div>
+              )}
+            >
+              <TarotScene />
+            </ErrorBoundary>
           </div>
 
           <HandTrackerPanel />

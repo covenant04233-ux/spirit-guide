@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
-import { Sparkles, Stars, useTexture } from '@react-three/drei'
+import { Html, Sparkles, Stars, useProgress, useTexture } from '@react-three/drei'
 import { SpiritFingertip } from '../hand/SpiritFingertip'
 import { DeckWashFx } from './DeckWashFx'
 import { GestureBridge } from './GestureBridge'
@@ -9,6 +9,28 @@ import { RevealHoldAndFlip } from './RevealHoldAndFlip'
 import { SpreadRevealStrip } from './SpreadRevealStrip'
 import { TarotDeckArc } from './TarotDeckArc'
 import { RIDER_WAITE_IMAGE_URLS } from '../../data/riderWaiteDeck'
+
+function SceneLoader() {
+  const { active, progress, errors, item } = useProgress()
+  if (!active && (!errors || errors.length === 0)) return null
+
+  return (
+    <Html center>
+      <div className="pointer-events-none rounded-xl border border-white/10 bg-black/60 px-4 py-3 text-center shadow-2xl backdrop-blur-md">
+        <p className="font-sans text-xs text-slate-200">
+          {errors?.length
+            ? '贴图加载失败（常见：无法访问 Wikimedia）'
+            : `正在加载牌面贴图… ${Math.round(progress)}%`}
+        </p>
+        {item ? (
+          <p className="mt-1 max-w-[60vw] break-all font-mono text-[10px] text-slate-400">
+            {String(item)}
+          </p>
+        ) : null}
+      </div>
+    </Html>
+  )
+}
 
 function SceneContent({ deckRef, registerSpreadFlipRef }) {
   const backTex = useTexture('/card-back.png')
@@ -102,7 +124,7 @@ export function TarotScene() {
       camera={{ position: [0, 2.55, 10.4], fov: 40, near: 0.1, far: 120 }}
       gl={{ antialias: true, alpha: false }}
     >
-      <Suspense fallback={null}>
+      <Suspense fallback={<SceneLoader />}>
         <SceneContent deckRef={deckRef} registerSpreadFlipRef={registerSpreadFlipRef} />
         <RevealHoldAndFlip spreadFlipRefs={spreadFlipRefs} />
       </Suspense>
