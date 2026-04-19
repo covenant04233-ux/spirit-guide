@@ -1,0 +1,53 @@
+{
+  "app": {
+    "title": "灵之指引",
+    "subtitle": "以手势唤启牌阵"
+  },
+  "hud": {
+    "language": "语言",
+    "yourQuestion": "想问的事（可选）",
+    "questionPlaceholder": "例如：这段关系将走向何处？",
+    "spread": "牌阵",
+    "oneCard": "单张",
+    "threeCard": "三张",
+    "phase": "阶段",
+    "phase_pre": "仪式前",
+    "phase_wash": "洗牌",
+    "phase_select": "选牌",
+    "phase_reveal": "翻牌"
+  },
+  "scene": {
+    "hint": "右上：阶段与问题；左下：灵视。选牌：食指对准牌面并捏合保持约 1 秒。翻牌：五指收拢呈捧物状保持约 1 秒。启封后底部为智者流式解读。"
+  },
+  "ritual": {
+    "begin": "进入仪式",
+    "washHint": "左右快速挥动手腕两次，完成洗牌波动。",
+    "selectHint": "已选 {{n}} / {{total}}：用灵力点指向目标牌，拇指与食指捏合并保持约 1 秒以确认。",
+    "pinchProgressHint": "捏合越久进度条越长；松手或移开则归零。",
+    "revealHoldHint": "抽出的牌已在牌阵上方排开（牌背朝你）。手心朝向镜头，轻握拳或四指弯向掌心约 1 秒，牌将依次翻面；随后开始解读。",
+    "revealAnimating": "牌阵正在翻开…",
+    "revealedDone": "牌面已启封。下方智者正以流式文字回应你的问题。",
+    "reset": "重来一局",
+    "cameraSuggest": "建议先开启灵视以便追踪手势。"
+  },
+  "sage": {
+    "title": "无名智者",
+    "streaming": "正在诉说…",
+    "waiting": "正在聆听星轨…",
+    "missingKey": "未配置模型密钥：请在 .env.local 中任选一种——(1) OpenAI 兼容：VITE_OPENAI_COMPAT_API_KEY + VITE_OPENAI_COMPAT_BASE_URL（如 DeepSeek https://api.deepseek.com/v1），详见 .env.example；(2) 或 VITE_GEMINI_API_KEY。",
+    "comicGenerate": "生成四格漫画",
+    "comicGenerating": "漫画生成中…",
+    "comicOpenNew": "新窗口查看原图",
+    "comicAlt": "根据解牌生成的四格漫画",
+    "comicMissingKey": "未配置豆包文生图密钥：请在 .env.local 设置 VITE_DOUBAO_API_KEY（以及可选的 VITE_DOUBAO_BASE_URL / VITE_DOUBAO_SEEDREAM_MODEL）。",
+    "comicEmptyReading": "解牌文本为空，请先完成解读再生成漫画。"
+  },
+  "camera": {
+    "start": "开启灵视（摄像头）",
+    "stop": "关闭灵视",
+    "loading": "正在唤醒手势模型…",
+    "retry": "重试",
+    "hint": "浏览器需你点击按钮后才会请求摄像头。将手放在画面内，食指指尖会映射到牌阵上方的光点。",
+    "errorGeneric": "无法启动摄像头或手势模型，请检查权限与网络。"
+  }
+}

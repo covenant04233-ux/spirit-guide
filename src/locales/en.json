@@ -1,0 +1,53 @@
+{
+  "app": {
+    "title": "spirit guide",
+    "subtitle": "Guidance through gesture"
+  },
+  "hud": {
+    "language": "Language",
+    "yourQuestion": "Your question (optional)",
+    "questionPlaceholder": "e.g. Where is this bond heading?",
+    "spread": "Spread",
+    "oneCard": "Single card",
+    "threeCard": "Three cards",
+    "phase": "Phase",
+    "phase_pre": "Before the ritual",
+    "phase_wash": "Shuffling",
+    "phase_select": "Choosing",
+    "phase_reveal": "Revealing"
+  },
+  "scene": {
+    "hint": "Top-right: phase & question. Bottom-left: Vision. Select: point with the spirit dot and pinch thumb–index for ~1s. Reveal: cup your fingers for ~1s. After the faces open, the sage streams below."
+  },
+  "ritual": {
+    "begin": "Enter the ritual",
+    "washHint": "Shake your wrist side to side twice to finish the wash.",
+    "selectHint": "{{n}} / {{total}} chosen — point at a card with the spirit dot, pinch thumb and index, and hold ~1s to confirm.",
+    "pinchProgressHint": "The bar fills while you hold the pinch; release or move away to reset.",
+    "revealHoldHint": "Your draw sits in a row above the deck, backs facing you. Face your palm toward the camera and hold a loose fist or curled fingers (~1s) to flip the cards one by one; interpretation follows.",
+    "revealAnimating": "The cards are turning…",
+    "revealedDone": "Faces revealed. The sage is streaming a reply below.",
+    "reset": "Start over",
+    "cameraSuggest": "Turn on Vision first so gestures are tracked."
+  },
+  "sage": {
+    "title": "The nameless sage",
+    "streaming": "Speaking…",
+    "waiting": "Listening to the stars…",
+    "missingKey": "No LLM key: set either (1) VITE_OPENAI_COMPAT_API_KEY + VITE_OPENAI_COMPAT_BASE_URL (e.g. DeepSeek https://api.deepseek.com/v1) or (2) VITE_GEMINI_API_KEY in .env.local — see .env.example.",
+    "comicGenerate": "Generate 4-panel comic",
+    "comicGenerating": "Generating comic…",
+    "comicOpenNew": "Open full image",
+    "comicAlt": "Four-panel comic generated from tarot reading",
+    "comicMissingKey": "Missing Doubao image key: set VITE_DOUBAO_API_KEY in .env.local (optionally VITE_DOUBAO_BASE_URL / VITE_DOUBAO_SEEDREAM_MODEL).",
+    "comicEmptyReading": "Reading text is empty. Finish the reading first."
+  },
+  "camera": {
+    "start": "Open Vision (camera)",
+    "stop": "Close Vision",
+    "loading": "Loading hand model…",
+    "retry": "Retry",
+    "hint": "The browser only asks for the camera after you tap the button. Keep your hand in frame; the index fingertip maps to the glowing point above the spread.",
+    "errorGeneric": "Could not start the camera or hand model. Check permissions and network."
+  }
+}
